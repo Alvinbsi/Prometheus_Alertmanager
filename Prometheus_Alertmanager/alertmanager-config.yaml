@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  alertmanager.yaml: |
+    global:
+      resolve_timeout: 5m
+
+    route:
+      receiver: webhook
+      group_by: ['alertname']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 1h
+
+    receivers:
+      - name: webhook
+        webhook_configs:
+          - url: 'http://aa7c2d81c08b34d82a4dd7a125f55339-1689132779.ap-south-1.elb.amazonaws.com/webhook' # Webhook service URL
